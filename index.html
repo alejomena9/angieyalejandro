@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Angie &amp; Alejandro</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gloock&family=Karla:wght@400;500;700&family=Caveat:wght@500;700&display=swap">
+<style>
+/* Layout: portada con la foto de los dos, contador y frase del día; luego álbum por año, playlist y lugares */
+:root{
+  --paper:#f3eef0; --card:#fffdfd; --ink:#2b1d26; --muted:#7a6872;
+  --rose:#b03a5b; --rose-soft:#f1d9e0; --line:#e2d6db; --shadow:rgba(60,20,40,.14);
+  --f-display:"Gloock",Georgia,"Times New Roman",serif;
+  --f-body:"Karla",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-hand:"Caveat","Segoe Print","Bradley Hand",cursive;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root{
+  --paper:#1b1418; --card:#2a1f25; --ink:#f4e9ee; --muted:#b39ea9;
+  --rose:#ec7f9c; --rose-soft:#43262f; --line:#3d2d35; --shadow:rgba(0,0,0,.45); color-scheme:dark}}
+
+*{box-sizing:border-box}
+html{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{background:var(--paper);color:var(--ink);font:16px/1.6 var(--f-body);margin:0}
+img{max-width:100%}
+[hidden]{display:none!important}
+.wrap{max-width:1080px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:40px 80px}
+h1,h2,h3{font-family:var(--f-display);font-weight:400;text-wrap:balance;margin:0}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--rose);outline-offset:3px}
+.note{color:var(--muted);font-size:.9rem}
+.eyebrow{font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0 0 6px}
+
+/* Portada */
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center;padding-bottom:36px;border-bottom:1px solid var(--line)}
+.hero-text{min-width:0;display:flex;flex-direction:column;gap:22px}
+.hero h1{font-size:clamp(2.6rem,7vw,5rem);line-height:.95}
+.hero h1 .amp{display:block;color:var(--rose);font-family:var(--f-hand);font-size:.75em;line-height:1;margin:.05em 0}
+.cover{margin:0;justify-self:center;width:min(380px,100%);background:var(--card);padding:14px 14px 52px;box-shadow:0 24px 50px -20px var(--shadow),0 1px 2px var(--shadow);transform:rotate(2.5deg);position:relative}
+.cover img{display:block;width:100%;aspect-ratio:4/5;object-fit:cover;filter:grayscale(1)}
+.cover figcaption{position:absolute;left:0;right:0;bottom:12px;text-align:center;font-family:var(--f-hand);font-size:1.6rem;color:var(--ink)}
+.counter .num{font-family:var(--f-display);font-size:clamp(2.8rem,8vw,4.4rem);line-height:1;color:var(--rose);font-variant-numeric:tabular-nums}
+.counter .lbl{font-family:var(--f-hand);font-size:1.5rem;color:var(--muted)}
+.stats{display:flex;flex-wrap:wrap;gap:6px 20px;color:var(--muted);font-size:.92rem}
+.stats b{color:var(--ink);font-variant-numeric:tabular-nums}
+.daily{margin:0;padding:4px 0 4px 18px;border-left:3px solid var(--rose)}
+.daily blockquote{margin:0;font-family:var(--f-hand);font-size:clamp(1.5rem,3.6vw,2rem);line-height:1.2;text-wrap:balance}
+
+/* Álbum */
+.section-head{margin-top:64px}
+.section-head h2{font-size:2rem;margin-bottom:4px}
+.year{display:grid;grid-template-columns:120px 1fr;gap:24px;margin-top:40px}
+.year>h2{font-size:2.6rem;color:var(--rose);position:sticky;top:calc(env(safe-area-inset-top,0px) + 16px);align-self:start;font-variant-numeric:tabular-nums}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:34px 26px;min-width:0}
+.polaroid{background:var(--card);padding:12px 12px 16px;box-shadow:0 10px 28px -12px var(--shadow),0 1px 2px var(--shadow);transform:rotate(var(--r,0deg));transition:transform .25s;cursor:pointer;border:0;text-align:left;width:100%;display:flex;flex-direction:column;gap:10px}
+.polaroid:hover{transform:rotate(0) translateY(-4px)}
+.ph{aspect-ratio:4/5;max-width:100%;background:var(--rose-soft);overflow:hidden;position:relative;display:grid;place-items:center}
+.ph img,.ph video{width:100%;height:100%;object-fit:cover;display:block}
+.ph .ph-empty{font-family:var(--f-hand);font-size:1.6rem;color:var(--rose);padding:20px;text-align:center}
+.badge{position:absolute;right:8px;bottom:8px;background:rgba(20,10,15,.65);color:#fff;font-size:.75rem;padding:2px 8px;border-radius:999px}
+.cap{font-family:var(--f-hand);font-size:1.5rem;line-height:1.15}
+.meta{display:flex;justify-content:space-between;gap:8px;font-size:.82rem;color:var(--muted);min-width:0}
+.meta span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.empty{margin-top:24px;padding:22px;border:1px dashed var(--line);color:var(--muted);max-width:640px}
+
+/* Playlist */
+.tracks{list-style:none;margin:18px 0 0;padding:0;counter-reset:t;border-top:1px solid var(--line)}
+.track{display:grid;grid-template-columns:44px 1fr auto;gap:14px;align-items:center;padding:14px 4px;border-bottom:1px solid var(--line);counter-increment:t}
+.track::before{content:counter(t,decimal-leading-zero);font-family:var(--f-display);font-size:1.4rem;color:var(--rose);font-variant-numeric:tabular-nums}
+.track .info{min-width:0}
+.track .song{font-weight:700;overflow-wrap:anywhere}
+.track .artist{color:var(--muted)}
+.track .why{font-family:var(--f-hand);font-size:1.3rem;line-height:1.2;margin-top:2px;overflow-wrap:anywhere}
+.track .from{font-size:.8rem;color:var(--muted);letter-spacing:.04em}
+.btn{display:inline-block;border:1px solid var(--line);background:var(--card);padding:7px 14px;border-radius:999px;cursor:pointer;text-decoration:none;color:var(--ink);font-size:.88rem;transition:border-color .15s}
+.btn:hover{border-color:var(--rose)}
+.tracks .empty-row{padding:18px 4px;color:var(--muted);border-bottom:1px solid var(--line)}
+
+/* Lugares */
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.chip{display:inline-flex;gap:8px;align-items:center;padding:8px 14px;border-radius:999px;background:var(--card);border:1px solid var(--line);color:var(--ink);text-decoration:none}
+.chip:hover{border-color:var(--rose)}
+.chip small{color:var(--rose);font-weight:700;font-variant-numeric:tabular-nums}
+
+/* Visor */
+dialog{border:0;padding:0;background:var(--card);color:var(--ink);width:100%;max-width:min(980px,calc(100vw - 24px));box-shadow:0 30px 80px -20px rgba(0,0,0,.5)}
+dialog::backdrop{background:rgba(25,10,18,.7)}
+.v-media{background:#120c10;display:grid;place-items:center;position:relative}
+.v-media img,.v-media video{max-width:100%;max-height:72vh;display:block}
+.v-nav{position:absolute;top:50%;transform:translateY(-50%);width:42px;height:42px;border-radius:50%;border:0;background:rgba(255,255,255,.85);color:#2b1d26;font-size:1.3rem;cursor:pointer}
+.v-prev{left:10px}.v-next{right:10px}
+.v-body{padding:20px 24px 24px;display:flex;flex-direction:column;gap:8px}
+.v-body h3{font-size:2rem}
+.v-body .when{color:var(--muted);font-size:.9rem}
+.v-body .text{white-space:pre-wrap;max-width:65ch}
+.v-body a{color:var(--rose)}
+.v-actions{display:flex;justify-content:flex-end}
+
+footer{margin-top:72px;padding-top:20px;border-top:1px solid var(--line);color:var(--muted);font-size:.85rem;text-align:center;font-family:var(--f-hand);font-size:1.3rem}
+
+@media (max-width:720px){
+  .hero{grid-template-columns:1fr;gap:28px}
+  .cover{order:-1;width:min(300px,86%)}
+  .year{grid-template-columns:1fr;gap:12px}.year>h2{position:static}
+  .track{grid-template-columns:36px 1fr}.track .ops{grid-column:2}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}.polaroid,.cover{transform:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <div class="hero-text">
+      <div>
+        <p class="eyebrow">Nuestro álbum</p>
+        <h1 id="names">Angie <span class="amp">&amp;</span> Alejandro</h1>
+      </div>
+      <div class="counter">
+        <div class="num" id="days">—</div>
+        <div class="lbl" id="daysLbl">días juntos</div>
+      </div>
+      <figure class="daily">
+        <p class="eyebrow" id="dailyDate">Frase del día</p>
+        <blockquote id="dailyText"></blockquote>
+      </figure>
+      <div class="stats" id="stats"></div>
+    </div>
+    <figure class="cover" id="cover" hidden>
+      <img id="coverImg" alt="Angie y Alejandro">
+      <figcaption id="coverCap">nosotros</figcaption>
+    </figure>
+  </header>
+
+  <section>
+    <div class="section-head">
+      <h2>Nuestros recuerdos</h2>
+      <p class="note">Toca una foto para verla en grande.</p>
+    </div>
+    <p class="note" id="status">Cargando el álbum…</p>
+    <div id="timeline"></div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <h2>Nuestra playlist</h2>
+      <p class="note">Las canciones que nos hemos dedicado, en el orden en que llegaron.</p>
+    </div>
+    <ol class="tracks" id="tracks"></ol>
+  </section>
+
+  <section id="places" hidden>
+    <div class="section-head">
+      <h2>Nuestros lugares</h2>
+      <p class="note">Toca un lugar para abrirlo en Google Maps.</p>
+    </div>
+    <div class="chips" id="chips"></div>
+  </section>
+
+  <footer id="foot">hecho con amor</footer>
+</div>
+
+<dialog id="viewer">
+  <div class="v-media" id="vMedia"></div>
+  <div class="v-body">
+    <h3 id="vTitle"></h3>
+    <div class="when" id="vWhen"></div>
+    <div class="text" id="vText"></div>
+    <div class="v-actions"><button class="btn" type="button" id="vClose">Cerrar</button></div>
+  </div>
+</dialog>
+
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const MONTHS = ["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+  const VIDEO = /\.(mp4|mov|webm|m4v)$/i;
+  let data = {nombres:["Angie","Alejandro"], recuerdos:[], canciones:[], frases_propias:[]};
+  let viewing = null, viewIdx = 0;
+
+  const el = (tag, props={}, kids=[]) => { const e=document.createElement(tag); Object.assign(e, props); for (const k of [].concat(kids)) if(k) e.append(k); return e; };
+  const fmtDate = d => { if(!d) return ""; const [y,m,da] = d.split("-").map(Number); return da ? `${da} ${MONTHS[m-1]} ${y}` : m ? `${MONTHS[m-1]} ${y}` : String(y); };
+  const mapsUrl = p => "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(p);
+  const safeLink = u => /^https:\/\//i.test(u||"") ? u : "";
+  const rot = s => { let h=0; for (const c of s) h=(h*31+c.charCodeAt(0))|0; return ((Math.abs(h)%7)-3)*0.7 + "deg"; };
+  const path = p => encodeURI(p);
+
+  function mediaEl(p, opts={}){
+    if (VIDEO.test(p)) { const v = el("video",{src:path(p),playsInline:true,preload:"metadata"}); if(opts.controls) v.controls=true; else v.muted=true; return v; }
+    return el("img",{src:path(p),alt:opts.alt||"",loading:"lazy"});
+  }
+
+  /* Frase del día */
+  const PHRASES = [
+    "Lo mejor de mi día casi siempre tiene tu nombre.",
+    "Contigo aprendí que la casa no es un lugar.",
+    "No te elegí una vez. Te sigo eligiendo todos los días.",
+    "Hay canciones que ya no puedo escuchar sin pensar en ti.",
+    "El amor también es acordarse de cómo te gusta el café.",
+    "Si me pierdo, búscame donde estés tú.",
+    "Prefiero un martes cualquiera contigo que un viaje sin ti.",
+    "Tu risa es mi sonido favorito.",
+    "Querer bien es querer que el otro crezca, aunque eso nos cambie a los dos.",
+    "Nos tocó la distancia a veces, pero nunca nos tocó el olvido.",
+    "Me gusta quién soy cuando estoy contigo.",
+    "Cada foto de este álbum es una prueba de que valió la pena.",
+    "El amor no se nota en los días buenos, se nota en cómo pasamos los malos.",
+    "Tú eres mi lugar tranquilo en medio del ruido.",
+    "Todavía me pongo nervioso cuando me escribes.",
+    "Lo nuestro no es perfecto. Es nuestro, y eso es mejor.",
+    "Gracias por quedarte incluso cuando no era fácil.",
+    "Contigo los planes simples se vuelven recuerdos.",
+    "Te quiero en presente, en pasado y en todos los planes que todavía no hacemos.",
+    "Abrazarte es la forma más corta de decir que todo va a estar bien.",
+    "No necesito que el mundo se detenga. Solo que sigas caminando a mi lado.",
+    "El tiempo contigo pasa rápido, y aun así me alcanza para quererte más.",
+    "Amar también es escuchar sin tener prisa por responder.",
+    "Si tuviera que volver a empezar, empezaría otra vez por ti.",
+    "Las mejores conversaciones que he tenido fueron a tu lado.",
+    "Me haces sentir en casa aunque estemos lejos de casa.",
+    "Cada día juntos suma, incluso los que parecen normales.",
+    "Tus manos tienen la medida exacta de las mías.",
+    "Lo que siento por ti no cabe en un mensaje, pero lo intento todos los días.",
+    "Somos un equipo, y contigo hasta perder se siente distinto.",
+    "Me enamoré de los detalles, y después de todo lo demás.",
+    "Tu forma de mirarme me recuerda quién quiero ser.",
+    "No hay distancia que pueda con dos personas que deciden quedarse.",
+    "Gracias por las risas que nadie más entiende.",
+    "Quiero muchos más domingos así.",
+    "El amor es paciencia, ternura y un poco de valentía todos los días.",
+    "Si el corazón tuviera álbum de fotos, todas serían contigo.",
+    "Elegirte fue fácil. Quererte bien es lo que quiero aprender siempre.",
+    "Tu nombre me suena a calma.",
+    "Lo bonito de nosotros es que todavía nos falta mucho por vivir.",
+    "Te admiro tanto como te quiero.",
+    "Contigo entendí que los pequeños momentos son los que se quedan.",
+    "Hoy también te escogería a ti.",
+    "Donde estás tú, ahí quiero estar.",
+    "El mejor regalo que me ha dado la vida tiene tus ojos."
+  ];
+  function renderDaily(){
+    const all = PHRASES.concat((data.frases_propias||[]).filter(Boolean));
+    const now = new Date();
+    const dayNum = Math.floor(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()) / 86400000);
+    $("dailyText").textContent = "“" + all[dayNum % all.length] + "”";
+    $("dailyDate").textContent = "Frase del día · " + now.getDate() + " " + MONTHS[now.getMonth()] + " " + now.getFullYear();
+  }
+  function scheduleDaily(){
+    const now = new Date();
+    setTimeout(()=>{ renderDaily(); scheduleDaily(); renderCounter(); }, new Date(now.getFullYear(), now.getMonth(), now.getDate()+1) - now + 1000);
+  }
+
+  /* Encabezado */
+  function renderCounter(){
+    if (!data.inicio){ $("days").textContent="—"; $("daysLbl").textContent="días juntos (falta la fecha en datos.json)"; return; }
+    const [y,m,d] = data.inicio.split("-").map(Number);
+    const start = new Date(y,m-1,d||1), now = new Date(); now.setHours(0,0,0,0);
+    const days = Math.max(0, Math.round((now-start)/86400000));
+    $("days").textContent = days.toLocaleString("es-CO");
+    const yrs = Math.floor(days/365.25), mos = Math.floor((days%365.25)/30.44);
+    $("daysLbl").textContent = "días juntos" + (yrs||mos ? ` · ${yrs?yrs+(yrs===1?" año":" años"):""}${yrs&&mos?" y ":""}${mos?mos+(mos===1?" mes":" meses"):""}` : "");
+  }
+  function renderHeader(){
+    const [a,b] = data.nombres || ["Angie","Alejandro"];
+    const h=$("names"); h.textContent=""; h.append(a||"", el("span",{className:"amp",textContent:"&"}), b||"");
+    document.title = `${a} & ${b}`;
+    if (data.portada){ $("coverImg").src = path(data.portada); $("coverImg").alt = `${a} y ${b}`; $("cover").hidden=false; }
+    if (data.portada_texto) $("coverCap").textContent = data.portada_texto;
+    renderCounter();
+    const rec = data.recuerdos||[];
+    const media = rec.flatMap(r=>r.fotos||[]);
+    const videos = media.filter(p=>VIDEO.test(p)).length;
+    const places = new Set(rec.map(r=>(r.lugar||"").trim().toLowerCase()).filter(Boolean)).size;
+    const s=$("stats"); s.textContent="";
+    if (data.inicio) s.append(el("span",{},["Desde el ", el("b",{textContent:fmtDate(data.inicio)})]));
+    [[rec.length,"recuerdos"],[media.length-videos,"fotos"],[videos,"videos"],[(data.canciones||[]).length,"canciones"],[places,"lugares"]]
+      .forEach(([n,l])=>s.append(el("span",{},[el("b",{textContent:n})," "+l])));
+  }
+
+  /* Álbum */
+  function renderTimeline(){
+    const t=$("timeline"); t.textContent="";
+    const rec = data.recuerdos||[];
+    if (!rec.length){ t.append(el("p",{className:"empty",textContent:"Todavía no hay recuerdos en el álbum. Se agregan en el archivo datos.json del repositorio."})); return; }
+    const byYear = {};
+    [...rec].sort((a,b)=>(b.fecha||"").localeCompare(a.fecha||"")).forEach(r=>{ const y=(r.fecha||"").slice(0,4)||"Sin fecha"; (byYear[y] ||= []).push(r); });
+    Object.keys(byYear).sort((a,b)=>b.localeCompare(a)).forEach(y=>{
+      const grid=el("div",{className:"grid"});
+      byYear[y].forEach(r=>{
+        const card=el("button",{className:"polaroid",type:"button"});
+        card.style.setProperty("--r", rot((r.titulo||"")+(r.fecha||"")));
+        const ph=el("div",{className:"ph"}), fotos=r.fotos||[];
+        if (fotos.length){
+          ph.append(mediaEl(fotos[0],{alt:r.titulo}));
+          if (fotos.length>1) ph.append(el("span",{className:"badge",textContent:"+"+(fotos.length-1)}));
+          else if (VIDEO.test(fotos[0])) ph.append(el("span",{className:"badge",textContent:"▶ video"}));
+        } else ph.append(el("div",{className:"ph-empty",textContent:r.titulo}));
+        card.append(ph, el("div",{className:"cap",textContent:r.titulo||""}), el("div",{className:"meta"},[el("span",{textContent:fmtDate(r.fecha)}), el("span",{textContent:r.lugar||""})]));
+        card.addEventListener("click",()=>openViewer(r));
+        grid.append(card);
+      });
+      t.append(el("section",{className:"year"},[el("h2",{textContent:y}), grid]));
+    });
+  }
+
+  /* Playlist */
+  function renderSongs(){
+    const list=$("tracks"); list.textContent="";
+    const [a,b] = data.nombres||["Angie","Alejandro"];
+    const songs = data.canciones||[];
+    if (!songs.length){ list.append(el("li",{className:"empty-row",textContent:"Todavía no hay canciones. Se agregan en datos.json."})); return; }
+    const who = de => !de ? "" : de.toLowerCase()==="los dos" ? "De los dos" : `De ${de} para ${de===a?b:a}`;
+    [...songs].sort((x,y)=>(x.fecha||"9").localeCompare(y.fecha||"9")).forEach(s=>{
+      const from = [who(s.de), fmtDate(s.fecha)].filter(Boolean).join(" · ");
+      const info=el("div",{className:"info"},[
+        el("div",{},[el("span",{className:"song",textContent:s.cancion||""}), s.artista?el("span",{className:"artist",textContent:" · "+s.artista}):null]),
+        from?el("div",{className:"from",textContent:from}):null,
+        s.porque?el("div",{className:"why",textContent:s.porque}):null
+      ]);
+      const ops=el("div",{className:"ops"}), link=safeLink(s.link);
+      if (link) ops.append(el("a",{className:"btn",href:link,target:"_blank",rel:"noopener",textContent:"▶ Escuchar"}));
+      list.append(el("li",{className:"track"},[info,ops]));
+    });
+  }
+
+  /* Lugares */
+  function renderPlaces(){
+    const counts=new Map();
+    (data.recuerdos||[]).forEach(r=>{ const p=(r.lugar||"").trim(); if(!p) return; const k=p.toLowerCase(); const c=counts.get(k)||{name:p,n:0}; c.n++; counts.set(k,c); });
+    const chips=$("chips"); chips.textContent="";
+    [...counts.values()].sort((a,b)=>b.n-a.n).forEach(({name,n})=>chips.append(el("a",{className:"chip",href:mapsUrl(name),target:"_blank",rel:"noopener"},[el("span",{textContent:"📍 "+name}), el("small",{textContent:n})])));
+    $("places").hidden = counts.size===0;
+  }
+
+  /* Visor */
+  function openViewer(r){ viewing=r; viewIdx=0; drawViewer(); $("viewer").showModal(); }
+  function drawViewer(){
+    const r=viewing, fotos=r.fotos||[], box=$("vMedia"); box.textContent=""; box.hidden=!fotos.length;
+    if (fotos.length){
+      box.append(mediaEl(fotos[viewIdx],{controls:true,alt:r.titulo}));
+      if (fotos.length>1){
+        const p=el("button",{className:"v-nav v-prev",type:"button",textContent:"‹",ariaLabel:"Anterior"});
+        const n=el("button",{className:"v-nav v-next",type:"button",textContent:"›",ariaLabel:"Siguiente"});
+        p.onclick=()=>{viewIdx=(viewIdx-1+fotos.length)%fotos.length;drawViewer();};
+        n.onclick=()=>{viewIdx=(viewIdx+1)%fotos.length;drawViewer();};
+        box.append(p,n);
+      }
+    }
+    $("vTitle").textContent=r.titulo||"";
+    const w=$("vWhen"); w.textContent=fmtDate(r.fecha)+(fotos.length>1?` · ${viewIdx+1} de ${fotos.length}`:"");
+    if (r.lugar){ w.append(" · ", el("a",{href:mapsUrl(r.lugar),target:"_blank",rel:"noopener",textContent:r.lugar})); }
+    $("vText").textContent=r.nota||"";
+  }
+  $("vClose").onclick=()=>$("viewer").close();
+  $("viewer").addEventListener("close",()=>{ $("vMedia").textContent=""; });
+  document.addEventListener("keydown",e=>{
+    if (!$("viewer").open || !viewing) return;
+    const n=(viewing.fotos||[]).length; if(n<2) return;
+    if (e.key==="ArrowRight"){viewIdx=(viewIdx+1)%n;drawViewer();}
+    if (e.key==="ArrowLeft"){viewIdx=(viewIdx-1+n)%n;drawViewer();}
+  });
+
+  function renderAll(){ renderHeader(); renderDaily(); renderTimeline(); renderSongs(); renderPlaces(); }
+
+  renderDaily(); scheduleDaily();
+  fetch("datos.json",{cache:"no-store"})
+    .then(r=>{ if(!r.ok) throw new Error(r.status); return r.json(); })
+    .then(j=>{ data=Object.assign(data,j); $("status").hidden=true; renderAll(); })
+    .catch(()=>{ $("status").textContent="No se pudo leer datos.json. Revisa que el archivo exista y que no tenga errores de formato (comas o comillas)."; renderAll(); });
+})();
+</script>
+</body>
+</html>
